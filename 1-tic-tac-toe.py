@@ -51,4 +51,10 @@ while True:
         print("Invalid position. Please choose a number between 1 and 9.")
         continue
 
-    row, col = position_mapper[position]  
+    row_index, col_index = position_mapper[position]
+
+    if board[row_index][col_index] != ' ':
+        print("This position is already taken. Please choose another position.")
+        continue
+
+    board[row_index][col_index] = current_player_sign 
