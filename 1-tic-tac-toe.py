@@ -37,6 +37,17 @@ def print_game_board(board):
     for row in board:
         print("|" + " | ".join(row) + "|")
 
+def check_winner(board, sign):
+    for row in board:
+        if all(cell == sign for cell in row):
+            return True
+    for col in range(3):
+        if all(board[row][col] == sign for row in range(3)):
+            return True
+    if all(board[i][i] == sign for i in range(3)) or all(board[i][2 - i] == sign for i in range(3)):
+        return True
+    return False
+
 board = [[' ', ' ', ' '] for _ in range(3)]
 player_one_data, player_two_data = read_players_data()
 print_board_numeration()
@@ -64,5 +75,3 @@ while True:
     board[row_index][col_index] = current_player_sign
     print_game_board(board)
     turns += 1
-
-    
