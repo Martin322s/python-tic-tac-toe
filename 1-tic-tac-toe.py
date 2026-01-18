@@ -73,6 +73,9 @@ def check_position(position, board):
     
     return (row_index, col_index)
 
+def check_draw(board):
+    return all(cell != ' ' for row in board for cell in row)
+
 board = [[' ', ' ', ' '] for _ in range(3)]
 player_one_data, player_two_data = read_players_data()
 print_board_numeration()
@@ -94,6 +97,10 @@ while True:
         board[row_index][col_index] = current_player_sign
         print_game_board(board)
         turns += 1
+
+    if check_draw(board):
+        print("The game is a draw!")
+        break
 
     if check_winner(board, current_player_sign):
         print(f"Congratulations {current_player_name}! You have won the game!")
