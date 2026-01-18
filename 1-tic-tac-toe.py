@@ -1,3 +1,12 @@
+class InvalidNumberValueError(Exception):
+    pass
+
+class InvalidNumberRangeError(Exception):
+    pass
+
+class PositionAlreadyTakenError(Exception):
+    pass
+
 position_mapper = {
     1: (0, 0),
     2: (0, 1),
@@ -35,7 +44,7 @@ def print_board_numeration():
 
 def print_game_board(board):
     for row in board:
-        print("|" + " | ".join(row) + "|")
+        print(" |" + " | ".join(row) + "|")
 
 def check_winner(board, sign):
     for row in board:
@@ -48,6 +57,22 @@ def check_winner(board, sign):
         return True
     return False
 
+def check_position(position, board):
+    try:
+        position = int(position)
+    except ValueError:
+        raise InvalidNumberValueError("The position must be a number between 1 and 9.")
+    
+    if position < 1 or position > 9:
+        raise InvalidNumberRangeError("The position must be a number between 1 and 9.")
+    
+    row_index, col_index = position_mapper[position]
+
+    if board[row_index][col_index] != ' ':
+        raise PositionAlreadyTakenError("This position is already taken. Please choose another one.")
+    
+    return (row_index, col_index)
+
 board = [[' ', ' ', ' '] for _ in range(3)]
 player_one_data, player_two_data = read_players_data()
 print_board_numeration()
@@ -55,26 +80,20 @@ turns = 1
 
 while True:
     current_player_name, current_player_sign = player_one_data if turns % 2 != 0 else player_two_data
+    position = input(f"{current_player_name}, enter free the position (1-9) where you want to place your sign: ")
+
     try:
-        position = input(f"{current_player_name}, enter free the position (1-9) where you want to place your sign: ")
-        position = int(position)
-    except ValueError:
-        print("Invalid input. Please enter a valid number between 1 and 9.")
+        row_index, col_index = check_position(position, board)
+    except (InvalidNumberValueError, InvalidNumberRangeError) as e:
+        print(e)
         continue
-
-    if position < 1 or position > 9:
-        print("Invalid position. Please choose a number between 1 and 9.")
+    except PositionAlreadyTakenError as e:
+        print(e)
         continue
-
-    row_index, col_index = position_mapper[position]
-
-    if board[row_index][col_index] != ' ':
-        print("This position is already taken. Please choose another position.")
-        continue
-
-    board[row_index][col_index] = current_player_sign
-    print_game_board(board)
-    turns += 1
+    else:
+        board[row_index][col_index] = current_player_sign
+        print_game_board(board)
+        turns += 1
 
     if check_winner(board, current_player_sign):
         print(f"Congratulations {current_player_name}! You have won the game!")
