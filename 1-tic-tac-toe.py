@@ -1,3 +1,15 @@
+position_mapper = {
+    1: (0, 0),
+    2: (0, 1),
+    3: (0, 2),
+    4: (1, 0),
+    5: (1, 1),
+    6: (1, 2),
+    7: (2, 0),
+    8: (2, 1),
+    9: (2, 2)
+}
+
 def read_players_data():
     player_one_name = input("Enter the name of Player 1: ")
     player_two_name = input("Enter the name of Player 2: ")
@@ -21,7 +33,7 @@ def print_board_numeration():
     print(" 4 | 5 | 6 ")
     print(" 7 | 8 | 9 ")
 
-board = [['', ' ', ' '] for _ in range(3)]
+board = [[' ', ' ', ' '] for _ in range(3)]
 player_one_data, player_two_data = read_players_data()
 print_board_numeration()
 turns = 1
@@ -39,3 +51,4 @@ while True:
         print("Invalid position. Please choose a number between 1 and 9.")
         continue
 
+    row, col = position_mapper[position]  
