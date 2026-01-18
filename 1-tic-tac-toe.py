@@ -75,3 +75,7 @@ while True:
     board[row_index][col_index] = current_player_sign
     print_game_board(board)
     turns += 1
+
+    if check_winner(board, current_player_sign):
+        print(f"Congratulations {current_player_name}! You have won the game!")
+        break
