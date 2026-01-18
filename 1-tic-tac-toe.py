@@ -20,3 +20,22 @@ def print_board_numeration():
     print(" 1 | 2 | 3 ")
     print(" 4 | 5 | 6 ")
     print(" 7 | 8 | 9 ")
+
+board = [['', ' ', ' '] for _ in range(3)]
+player_one_data, player_two_data = read_players_data()
+print_board_numeration()
+turns = 1
+
+while True:
+    current_player_name, current_player_sign = player_one_data[0] if turns % 2 != 0 else player_two_data[0]
+    try:
+        position = input(f"{current_player_name}, enter free the position (1-9) where you want to place your sign: ")
+        position = int(position)
+    except ValueError:
+        print("Invalid input. Please enter a valid number between 1 and 9.")
+        continue
+
+    if position < 1 or position > 9:
+        print("Invalid position. Please choose a number between 1 and 9.")
+        continue
+
